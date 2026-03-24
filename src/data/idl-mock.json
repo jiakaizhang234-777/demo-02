@@ -1,0 +1,81 @@
+{
+  "interfaces": [
+    {
+      "service": "UserService",
+      "interfaceName": "GetUserProfile",
+      "description": "根据 userId 查询用户详情",
+      "http": {
+        "method": "GET",
+        "path": "/api/v1/user/profile"
+      },
+      "request": {
+        "type": "object",
+        "required": ["userId"],
+        "properties": {
+          "userId": { "type": "string", "description": "用户ID" },
+          "withStats": { "type": "boolean", "description": "是否包含统计信息", "default": false }
+        }
+      },
+      "response": {
+        "type": "object",
+        "properties": {
+          "code": { "type": "integer", "example": 0 },
+          "message": { "type": "string", "example": "ok" },
+          "data": {
+            "type": "object",
+            "properties": {
+              "userId": { "type": "string" },
+              "nickname": { "type": "string" },
+              "avatar": { "type": "string" },
+              "level": { "type": "integer" },
+              "registerAt": { "type": "string", "format": "date-time" }
+            }
+          }
+        }
+      }
+    },
+    {
+      "service": "OrderService",
+      "interfaceName": "ListOrders",
+      "description": "分页获取订单列表",
+      "http": {
+        "method": "POST",
+        "path": "/api/v1/order/list"
+      },
+      "request": {
+        "type": "object",
+        "required": ["pageNo", "pageSize"],
+        "properties": {
+          "pageNo": { "type": "integer", "minimum": 1 },
+          "pageSize": { "type": "integer", "minimum": 1, "maximum": 100 },
+          "status": { "type": "string", "enum": ["CREATED", "PAID", "CLOSED"] }
+        }
+      },
+      "response": {
+        "type": "object",
+        "properties": {
+          "code": { "type": "integer", "example": 0 },
+          "message": { "type": "string", "example": "ok" },
+          "data": {
+            "type": "object",
+            "properties": {
+              "total": { "type": "integer" },
+              "list": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "orderId": { "type": "string" },
+                    "amount": { "type": "number" },
+                    "status": { "type": "string" },
+                    "createdAt": { "type": "string", "format": "date-time" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}
