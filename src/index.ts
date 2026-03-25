@@ -20,7 +20,7 @@ const argsSchema = z.object({
 
 const server = new Server(
   {
-    name: "idl-mock-prompt-server",
+    name: "idl_mock",
     version: "0.1.0",
   },
   {
@@ -75,7 +75,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
   };
 });
 
-server.setRequestHandler(CallToolRequestSchema, async (request) => {
+server.setRequestHandler(CallToolRequestSchema, async (request) => {  
   const { name, arguments: rawArgs } = request.params;
 
   if (name !== TOOL_NAME) {
@@ -138,7 +138,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
   };
 });
 
-async function main() {
+async function main() { 
   const transport = new StdioServerTransport();
   await server.connect(transport);
 }
